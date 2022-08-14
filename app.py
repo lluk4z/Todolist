@@ -23,6 +23,12 @@ app.config['SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False, unique=True)
+    email = db.Column(db.String(30), nullable=False, unique=True)
+    password = db.Column(db.String(80), nullable=False)
+
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
