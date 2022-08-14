@@ -100,6 +100,11 @@ def tasks_list():
     tasks = Task.query.all()
     return render_template('list.html', tasks=tasks)
 
+@app.route('/membros')
+def member_list():
+    members = User.query.all()
+    return render_template('membros.html', members=members)
+
 @app.route('/task', methods=['POST'])
 def add_task():
     content = request.form['content']
