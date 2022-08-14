@@ -91,6 +91,10 @@ class Task(db.Model):
 
 db.create_all()
 
+@app.route('/')
+def home():
+    return render_template('home.html')
+
 @app.route('/list')
 def tasks_list():
     tasks = Task.query.all()
