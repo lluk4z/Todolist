@@ -131,11 +131,11 @@ def add_task():
 def delete_task(task_id):
     task = Task.query.get(task_id)
     if not task:
-        return redirect('list')
+        return redirect('/list')
 
     db.session.delete(task)
     db.session.commit()
-    return redirect('list')
+    return redirect('/list')
 
 
 @app.route('/done/<int:task_id>')
@@ -143,14 +143,14 @@ def resolve_task(task_id):
     task = Task.query.get(task_id)
 
     if not task:
-        return redirect('list')
+        return redirect('/list')
     if task.done:
         task.done = False
     else:
         task.done = True
 
     db.session.commit()
-    return redirect('list')
+    return redirect('/list')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
