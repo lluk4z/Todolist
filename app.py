@@ -1,4 +1,5 @@
 from crypt import methods
+from curses import flash
 import email
 from email.policy import default
 from enum import unique
@@ -14,6 +15,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
+
 
 
 app = Flask(__name__)
@@ -100,6 +102,11 @@ def tasks_list():
     tasks = Task.query.all()
     return render_template('list.html', tasks=tasks)
 
+@app.route('/update')
+def update_list():
+    tasks = Task.query.all()
+    return render_template('update.html', tasks=tasks)
+
 @app.route('/membros')
 def member_list():
     members = User.query.all()
@@ -136,6 +143,24 @@ def delete_task(task_id):
     db.session.delete(task)
     db.session.commit()
     return redirect('/list')
+
+@app.route('/update/<int:task_id>', methods=['GET', 'POST'])
+def update_task(task_id):
+    task_update = Task.query.get_or_404(task_id)
+    if request.method == "POST":
+        task_update.name = request.form['name']
+        task_update.content = request.form['content']
+        task_update.priority = request.form['priority']
+        try:
+            db.session.commit()
+            
+            return render_template('update.html', task_update=task_update,task_id=task_id)
+        except:
+           
+            return render_template('update.html', task_update=task_update,task_id=task_id)
+    else:
+        return render_template('update.html', task_update=task_update,task_id=task_id)
+   
 
 
 @app.route('/done/<int:task_id>')
